@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f7fb">
+  <title>Students | Campus Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="Campus Desk home">
+        <span class="brand-mark" aria-hidden="true">C</span>
+        <span>campus<span class="brand-light">desk</span></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="#students" aria-current="page">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM20 8v6m3-3h-6"/></svg>
+          Students <span class="nav-count" id="nav-count">0</span>
+        </a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card">
+          <div class="help-icon">?</div>
+          <strong>Need a hand?</strong>
+          <p>Manage your student records right here.</p>
+        </div>
+        <div class="profile-row">
+          <div class="avatar avatar-admin">AD</div>
+          <div class="profile-copy"><strong>Administrator</strong><span>Campus manager</span></div>
+          <span class="profile-menu" aria-hidden="true">···</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area" id="students">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>Workspace</span><span class="crumb-separator">/</span><strong>Students</strong></div>
+        <div class="topbar-right"><span class="live-dot" id="connection-dot"></span><span id="connection-label">Connecting to database</span><span class="topbar-divider"></span><span class="today-label" id="today-label"></span></div>
+      </header>
+
+      <section class="page-content">
+        <div class="welcome-row">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> STUDENT DIRECTORY</div>
+            <h1>Students</h1>
+            <p class="page-subtitle">Keep your student records organized and up to date.</p>
+          </div>
+          <button class="button button-primary" id="add-student-button" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14m-7-7h14"/></svg>
+            Add student
+          </button>
+        </div>
+
+        <div class="stats-grid" aria-label="Student statistics">
+          <article class="stat-card">
+            <div class="stat-top"><span>Total students</span><span class="stat-icon indigo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM20 8v6m3-3h-6"/></svg></span></div>
+            <div class="stat-value" id="total-count">—</div><div class="stat-foot">Records in your directory</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Courses represented</span><span class="stat-icon mint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5ZM5 11v5l7 4 7-4v-5"/></svg></span></div>
+            <div class="stat-value" id="course-count">—</div><div class="stat-foot">Distinct study programs</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Active semesters</span><span class="stat-icon peach"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span></div>
+            <div class="stat-value" id="semester-count">—</div><div class="stat-foot">Across the student body</div>
+          </article>
+        </div>
+
+        <section class="records-card" aria-labelledby="records-heading">
+          <div class="records-heading-row">
+            <div><h2 id="records-heading">All students <span class="heading-count" id="records-count">0</span></h2><p>Browse and manage your student directory.</p></div>
+            <div class="table-actions">
+              <label class="search-box">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+                <input id="search-input" type="search" placeholder="Search students..." autocomplete="off" aria-label="Search students">
+                <kbd>/</kbd>
+              </label>
+              <button class="button button-quiet" id="refresh-button" type="button" aria-label="Refresh student records" title="Refresh">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.5 9a7 7 0 0 1 11.6-2L20 12M4 12l2.9 5a7 7 0 0 0 11.6-2"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>STUDENT</th><th>STUDENT ID</th><th>COURSE</th><th>SEMESTER</th><th class="actions-heading">ACTIONS</th></tr></thead>
+              <tbody id="student-rows"><tr><td class="loading-cell" colspan="5"><span class="spinner"></span> Loading student records...</td></tr></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="table-summary">Showing 0 students</span><span class="storage-label"><span class="mini-live-dot"></span> Synced with MySQL</span></div>
+        </section>
+        <footer class="page-footer">Campus Desk <span>·</span> Student records, made simple.</footer>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="student-modal" hidden>
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> STUDENT DETAILS</div><h2 id="modal-title">Add a student</h2><p id="modal-subtitle">Add a new record to your directory.</p></div><button class="icon-button" id="close-modal" type="button" aria-label="Close dialog">×</button></div>
+      <form id="student-form">
+        <div class="form-grid">
+          <label class="field"><span>Student ID <b>*</b></span><input id="student-id" name="student_id" type="number" min="1" placeholder="e.g. 104" required><small>A unique number for this student.</small></label>
+          <label class="field"><span>Full name <b>*</b></span><input id="student-name" name="name" type="text" maxlength="100" placeholder="e.g. Aisha Khan" required></label>
+          <label class="field field-wide"><span>Email address <b>*</b></span><input id="student-email" name="email" type="email" maxlength="120" placeholder="name@example.com" required></label>
+          <label class="field"><span>Course <b>*</b></span><input id="student-course" name="course" type="text" maxlength="80" placeholder="e.g. Computer Science" required></label>
+          <label class="field"><span>Semester <b>*</b></span><input id="student-semester" name="semester" type="number" min="1" max="20" placeholder="e.g. 5" required></label>
+        </div>
+        <div class="form-error" id="form-error" role="alert" hidden></div>
+        <div class="modal-footer"><button class="button button-quiet" id="cancel-modal" type="button">Cancel</button><button class="button button-primary" id="submit-button" type="submit"><span id="submit-label">Add student</span><span class="button-spinner" id="submit-spinner" hidden></span></button></div>
+      </form>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
